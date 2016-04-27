@@ -27,7 +27,13 @@ TEMPLATE = u'''import subprocess
 import sys
 import os
 os.chdir(os.path.dirname(sys.executable))
-subprocess.call(['pythonw', 'Scripts/%s'])
+if os.path.exists('Scripts/%(script)s.py'):
+	target = 'Scripts/%(script)s.py'
+elif os.path.exists('Scripts/%(script)s-script.py'):
+	target = 'Scripts/%(script)s-script.py'
+else:
+	raise Exception('Cannot find script')
+subprocess.call(['pythonw', target])
 '''
 
 if os.path.exists('build'):
@@ -36,11 +42,10 @@ if os.path.exists('dist'):
 	shutil.rmtree('dist')
 
 with open(u'opensesame.py', u'w') as fd:
-	fd.write(TEMPLATE % u'opensesame.py')
+	fd.write(TEMPLATE % {u'script' : u'opensesame'})
 with open(u'opensesamerun.py', u'w') as fd:
-	fd.write(TEMPLATE % u'opensesamerun.py')
+	fd.write(TEMPLATE % {u'script' : u'opensesamerun'})
 
 subprocess.call(['python', 'setup-opensesame.py', 'py2exe'])
-
 os.remove('opensesame.py')
 os.remove('opensesamerun.py')

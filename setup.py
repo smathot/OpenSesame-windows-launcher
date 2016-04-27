@@ -21,7 +21,7 @@ along with OpenSesame.  If not, see <http://www.gnu.org/licenses/>.
 from setuptools import setup
 
 setup(name=u"opensesame-windows-launcher",
-	version='0.2.0',
+	version='0.2.1',
 	description=u"A graphical experiment builder for the social sciences",
 	author=u"Sebastiaan Mathot",
 	author_email=u"s.mathot@cogsci.nl",
