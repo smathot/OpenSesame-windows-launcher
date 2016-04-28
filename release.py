@@ -23,11 +23,13 @@ import os
 import subprocess
 import shutil
 
-TEMPLATE = u'''import subprocess
+TEMPLATE_EXE = u'''import subprocess
 import sys
 import os
 os.chdir(os.path.dirname(sys.executable))
-if os.path.exists('Scripts/%(script)s.py'):
+if os.path.exists('Scripts/safelaunch-%(script)s.py'):
+	target = 'Scripts/safelaunch-%(script)s.py'
+elif os.path.exists('Scripts/%(script)s.py'):
 	target = 'Scripts/%(script)s.py'
 elif os.path.exists('Scripts/%(script)s-script.py'):
 	target = 'Scripts/%(script)s-script.py'
@@ -36,16 +38,21 @@ else:
 subprocess.call(['pythonw', target])
 '''
 
+TEMPLATE_LAUNCHER = \
+	"__import__('pkg_resources').run_script('python-opensesame', '%(script)s')"
+
 if os.path.exists('build'):
 	shutil.rmtree('build')
 if os.path.exists('dist'):
 	shutil.rmtree('dist')
 
 with open(u'opensesame.py', u'w') as fd:
-	fd.write(TEMPLATE % {u'script' : u'opensesame'})
+	fd.write(TEMPLATE_EXE % {u'script' : u'opensesame'})
+with open(u'safelaunch-opensesame.py', u'w') as fd:
+	fd.write(TEMPLATE_LAUNCHER % {u'script' : u'opensesame'})
 with open(u'opensesamerun.py', u'w') as fd:
-	fd.write(TEMPLATE % {u'script' : u'opensesamerun'})
+	fd.write(TEMPLATE_EXE % {u'script' : u'opensesamerun'})
+with open(u'safelaunch-opensesamerun.py', u'w') as fd:
+	fd.write(TEMPLATE_LAUNCHER % {u'script' : u'opensesamerun'})
 
 subprocess.call(['python', 'setup-opensesame.py', 'py2exe'])
-os.remove('opensesame.py')
-os.remove('opensesamerun.py')
