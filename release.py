@@ -38,8 +38,12 @@ else:
 subprocess.call(['pythonw', target])
 '''
 
-TEMPLATE_LAUNCHER = \
-	"__import__('pkg_resources').run_script('python-opensesame', '%(script)s')"
+TEMPLATE_LAUNCHER = u'''
+# coding=utf-8
+if __name__ == "__main__":
+	from libqtopensesame import __main__
+	__main__.%(script)s()
+'''
 
 if os.path.exists('build'):
 	shutil.rmtree('build')
