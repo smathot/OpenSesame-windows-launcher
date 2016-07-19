@@ -23,7 +23,8 @@ import os
 import subprocess
 import shutil
 
-TEMPLATE_EXE = u'''import subprocess
+TEMPLATE_EXE = u'''# coding=utf-8
+import subprocess
 import sys
 import os
 os.chdir(os.path.dirname(sys.executable))
@@ -35,11 +36,10 @@ elif os.path.exists('Scripts/%(script)s-script.py'):
 	target = 'Scripts/%(script)s-script.py'
 else:
 	raise Exception('Cannot find script')
-subprocess.call(['pythonw', target])
+subprocess.call(['pythonw', target]+sys.argv[1:])
 '''
 
-TEMPLATE_LAUNCHER = u'''
-# coding=utf-8
+TEMPLATE_LAUNCHER = u'''# coding=utf-8
 if __name__ == "__main__":
 	from libqtopensesame import __main__
 	__main__.%(script)s()
