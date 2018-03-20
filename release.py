@@ -36,7 +36,7 @@ elif os.path.exists('Scripts/%(script)s-script.py'):
 	target = 'Scripts/%(script)s-script.py'
 else:
 	raise Exception('Cannot find script')
-subprocess.call(['pythonw', target]+sys.argv[1:])
+subprocess.call(['%(python)s', target]+sys.argv[1:])
 '''
 
 TEMPLATE_LAUNCHER = u'''# coding=utf-8
@@ -51,11 +51,11 @@ if os.path.exists('dist'):
 	shutil.rmtree('dist')
 
 with open(u'opensesame.py', u'w') as fd:
-	fd.write(TEMPLATE_EXE % {u'script' : u'opensesame'})
+	fd.write(TEMPLATE_EXE % {u'script' : u'opensesame', u'python' : 'pythonw'})
 with open(u'safelaunch-opensesame.py', u'w') as fd:
 	fd.write(TEMPLATE_LAUNCHER % {u'script' : u'opensesame'})
 with open(u'opensesamerun.py', u'w') as fd:
-	fd.write(TEMPLATE_EXE % {u'script' : u'opensesamerun'})
+	fd.write(TEMPLATE_EXE % {u'script' : u'opensesamerun', u'python' : 'python'})
 with open(u'safelaunch-opensesamerun.py', u'w') as fd:
 	fd.write(TEMPLATE_LAUNCHER % {u'script' : u'opensesamerun'})
 
